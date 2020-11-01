@@ -11,6 +11,10 @@ The data set included with the assignment is based on [2014 ACS 1-year estimates
 
 - - -
 
+## Navigation of the repo: Submission
+
+This completed files are in the `D3_data_journalism` directory.
+
 ## Tasks
 
 ### Part 1 - Core Assignment: D3 Dabbler (Required Assignment)
