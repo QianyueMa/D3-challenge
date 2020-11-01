@@ -17,7 +17,7 @@ var svgHeight = 500;
 // Define the chart's margins as an object
 var margin = {
     top: 40,
-    right: 100,
+    right: 50,
     bottom: 100,
     left: 100
 };
@@ -30,7 +30,7 @@ var svg = d3
     .select("#scatter")
     .append("svg")
     .classed("chart", true)
-    .attr("width", svgWidth+50)
+    .attr("width", svgWidth)
     .attr("height", svgHeight);
 
 // Group charts; shift everything over by the margins
@@ -42,37 +42,38 @@ var chartGroup = svg.append("g")
 d3.csv("/assets/data/data.csv").then(function(myData) {
 
     // number conversion
-    myData.forEach(function(xdata) {
-        xdata.poverty = +xdata.poverty;
-        xdata.healthcare = +xdata.healthcare;
+    myData.forEach(function(data) {
+        data.poverty = +data.poverty;
+        data.healthcare = +data.healthcare;
 
     });
 
     // x function
     var xLinearScale = d3.scaleLinear()
+        // Distribution of the dots
         .domain([d3.min(myData, d=>d.poverty)*0.9,
-            d3.max(myData, d => d.poverty)*1.1])
+            d3.max(myData, d => d.poverty)*1.07])
         .range([0, width]);
 
     // y function
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(myData, d => d.healthcare)*1.1])
+        .domain([d3.min(myData, d => d.healthcare)*0.5, d3.max(myData, d => d.healthcare)*1.1])
         .range([height, 0]);
 
-    // Create and situate axes and labels to the left and bottom of the chart
-    var bottomAxis = d3.axisBottom(xLinearScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
+    // Create and situate axes and labels
+    var xAxis = d3.axisBottom(xLinearScale);
+    var yAxis = d3.axisLeft(yLinearScale);
 
     // x axis
     chartGroup.append("g")
         .attr("transform", `translate(0, ${height})`)
         .style("font-size", "16px")
-        .call(bottomAxis);
+        .call(xAxis);
 
     // y axis
     chartGroup.append("g")
         .style("font-size", "16px")
-        .call(leftAxis);
+        .call(yAxis);
 
     // Represent each state with circle elements
     chartGroup.selectAll("circle")
@@ -81,7 +82,7 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .append("circle")
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
-        .attr("r", 12)
+        .attr("r", 11)
         // bubble colour & opacity level
         .attr("fill", "#89bdd3")
         .attr("opacity", ".9");
@@ -97,9 +98,8 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .attr("y", d => yLinearScale(d.healthcare))
         .attr("dy",5)
         .attr("text-anchor","middle")
-        .attr("font-size","12px")
-        // text colour
-        .attr("fill", "white");
+        .attr("font-size","11px")
+        .attr("fill", "white"); // text colour
 
     // y axis label
     chartGroup.append("text")
@@ -112,7 +112,7 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
 
     // x axis label
     chartGroup.append("text")
-        .attr("y", height + margin.bottom/2 - 10)
+        .attr("y", height + margin.bottom / 2)
         .attr("x", width / 2)
         .attr("dy", "1em")
         .classed("aText", true)
