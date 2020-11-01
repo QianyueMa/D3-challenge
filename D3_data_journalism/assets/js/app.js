@@ -1,10 +1,14 @@
 /* ----- Core Assignment: D3 Dabbler (Required Assignment) ----- */
 
-// Note: Use python -m http.server to run the visualization. This will host the page at localhost:8000 in the web browser.
+/* 
+Instructions:
+Create a scatterplot between two of the data variables: 
+such as Healthcare vs. Poverty or Smokers vs. Age
+i.e., Correlations Discovered Between Health Risks and Age, Income
 
-// Create a scatterplot between two of the data variables: 
-//such as Healthcare vs. Poverty or Smokers vs. Age
-//i.e., Correlations Discovered Between Health Risks and Age, Income
+Note: Use python -m http.server to run the visualization. This will host the page at localhost:8000 in the web browser.
+*/
+
 
 // Set svg vars
 // Define SVG area dimensions
@@ -33,7 +37,7 @@ var svg = d3
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// Healthcare vs. Poverty
+// Plot Healthcare vs. Poverty
 // Pull in the data from data.csv by using the d3.csv function
 d3.csv("/assets/data/data.csv").then(function(myData) {
 
