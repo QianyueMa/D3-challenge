@@ -2,37 +2,38 @@
 
 // Note: Use python -m http.server to run the visualization. This will host the page at localhost:8000 in the web browser.
 
-// Create a scatter plot between two of the data variables: 
+// Create a scatterplot between two of the data variables: 
 //such as Healthcare vs. Poverty or Smokers vs. Age
 //i.e., Correlations Discovered Between Health Risks and Age, Income
 
-
-// set svg vars
+// Set svg vars
+// Define SVG area dimensions
 var svgWidth = 800;
 var svgHeight = 500;
-
+// Define the chart's margins as an object
 var margin = {
-  top: 20,
-  right: 40,
-  bottom: 80,
-  left: 100
+    top: 40,
+    right: 100,
+    bottom: 100,
+    left: 100
 };
-
+// Define dimensions of the chart area
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
 
-// set up svg
-var svg = d3.select("#scatter")
-  .append("svg")
-  .classed("chart", true)
-  .attr("width", svgWidth)
-  .attr("height", svgHeight);
+// Select scatter, append SVG area to it, and set its dimensions
+var svg = d3
+    .select("#scatter")
+    .append("svg")
+    .classed("chart", true)
+    .attr("width", svgWidth+50)
+    .attr("height", svgHeight);
 
-// group charts
+// Group charts; shift everything over by the margins
 var chartGroup = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-
+// Healthcare vs. Poverty
 // Pull in the data from data.csv by using the d3.csv function
 d3.csv("/assets/data/data.csv").then(function(myData) {
 
@@ -77,8 +78,9 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", 12)
-        .attr("fill", "blue")
-        .attr("opacity", ".6");
+        // bubble colour & opacity level
+        .attr("fill", "#89bdd3")
+        .attr("opacity", ".9");
 
     // Include state abbreviations in the circles.
     chartGroup.selectAll("text.text-circles")
@@ -92,9 +94,10 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .attr("dy",5)
         .attr("text-anchor","middle")
         .attr("font-size","12px")
+        // text colour
         .attr("fill", "white");
 
-    // y axis
+    // y axis label
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", 30 - margin.left)
@@ -103,7 +106,7 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .classed("aText", true)
         .text("Lacks Healthcare (%)");
 
-    // x axis
+    // x axis label
     chartGroup.append("text")
         .attr("y", height + margin.bottom/2 - 10)
         .attr("x", width / 2)
@@ -112,3 +115,4 @@ d3.csv("/assets/data/data.csv").then(function(myData) {
         .text("Poverty Rate (%)");
 
 });
+
